@@ -1,5 +1,5 @@
+
 from django import forms
-from django.forms import widgets
 from . models import *
 
 class NotesForm(forms.ModelForm):
@@ -15,4 +15,14 @@ class HomeworkForm(forms.ModelForm):
     model = Homework
     widgest ={'due':DateInput()}
     fields= ['subject','title','description','due','is_finished']
+
+class DashboardForm(forms.Form):
+  text = forms.CharField(max_length=100, label="Enter your search : ")
+
+
+class TodoForm(forms.ModelForm):
+  class Meta:
+    model = Todo
+    fields = ['title', 'is_finished']
+    
 
