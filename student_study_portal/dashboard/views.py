@@ -8,9 +8,11 @@ from django.views import generic
 from youtubesearchpython import VideosSearch
 import requests
 import wikipedia
+from django.contrib.auth.decorators import login_required
+
 def home(request):
   return render(request,'dashboard/home.html')
-
+@login_required
 def notes(request):
   if request.method =='POST':
     form= NotesForm(request.POST)
@@ -24,13 +26,14 @@ def notes(request):
   context={'notes':notes ,'form':form}
   return render(request,'dashboard/notes.html',context)
 
+@login_required
 def delete_notes(request,pk=None):
   Notes.objects.get(id=pk).delete()
   return redirect ("notes")
-
 class Notes_Detail_View(generic.DetailView):
   model=Notes
 
+@login_required
 def homework(request):
   if request.method == 'POST':
     form = HomeworkForm(request.POST)
@@ -66,7 +69,7 @@ def homework(request):
 
   return render(request,'dashboard/homework.html',context)
 
-
+@login_required
 def update_homework(request, pk=None):
   homework = Homework.objects.get(id=pk)
   if homework.is_finished == True:
@@ -76,6 +79,7 @@ def update_homework(request, pk=None):
   homework.save()
   return redirect('homework')
 
+@login_required
 def delete_homework(request,pk=None):
   Homework.objects.get(id=pk).delete()
   return redirect("homework")
@@ -115,7 +119,7 @@ def youtube(request):
   context = {'form':form}
   return render(request,'dashboard/youtube.html',context)
 
-
+@login_required
 def todo(request):
   if request.method == 'POST':
     form = TodoForm(request.POST)
@@ -153,8 +157,8 @@ def todo(request):
   }
   return render(request,'dashboard/todo.html',context)
 
+@login_required
 def update_todo(request,pk=None):
-
   todo =Todo.objects.get(id=pk)
   if todo.is_finished==True:
     todo.is_finished = False
@@ -165,6 +169,7 @@ def update_todo(request,pk=None):
   todo.save()
   return redirect('todo')  
 
+@login_required
 def delete_todo(request, pk=None):
   Todo.objects.get(id=pk).delete()
   return redirect("todo")
@@ -317,7 +322,7 @@ def register(request):
       form.save()
       username = form.cleaned_data.get('username')
       messages.success(request, f'Account Created for {username}!!')
-      #redirect ("login")
+      return redirect ("login")
 
   else:    
     form = UserCreationForm()
@@ -325,3 +330,25 @@ def register(request):
     'form':form
     }
   return render(request,'dashboard/register.html',context)
+
+@login_required
+def profile(request):
+  homeworks = Homework.objects.filter(is_finished = False, user=request.user)
+  todos = Todo.objects.filter(is_finished = False, user=request.user)
+  if len(homeworks) == 0:
+    homework_done =True
+  else:
+    homework_done =False
+
+  if len(todos) == 0:
+    todos_done=True
+  else:
+    todos_done=True
+  
+  context = {
+    'homeworks': homeworks,
+    'todos': todos,
+    'homework_done':homework_done,
+    'todos_done':todos_done
+  }
+  return render(request,'dashboard/profile.html',context)
