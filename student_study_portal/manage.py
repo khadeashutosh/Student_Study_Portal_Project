@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#manage file
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
