@@ -8,6 +8,7 @@ from django.views import generic
 from youtubesearchpython import VideosSearch
 import requests
 import wikipedia
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 def home(request):
@@ -352,3 +353,7 @@ def profile(request):
     'todos_done':todos_done
   }
   return render(request,'dashboard/profile.html',context)
+
+def custom_logout(request):
+    logout(request)
+    return redirect('login')  
