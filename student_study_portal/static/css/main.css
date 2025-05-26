@@ -13,7 +13,6 @@ main {
 footer {
   font-family: Rubik, sans-serif, serif, "Times New Roman", Times, serif;
 }
-
 .example::-webkit-scrollbar {
   display: none;
 }
