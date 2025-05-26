@@ -34,5 +34,5 @@ urlpatterns = [
 
     path('logout/',custom_logout, name='logout'),
 
-    path('profile/', dash_views.profile,name='profile')
+    path('profile/', dash_views.profile,name='profile'),
 ]
