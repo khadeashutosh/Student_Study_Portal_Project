@@ -1,38 +1,49 @@
-{% extends 'dashboard/base.html' %} {% load static %} {% load crispy_forms_tags
-%} {% block content %}
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
 
-<div class="container">
+<div class="container mt-4">
   <div class="row">
     {% for note in notes %}
-    <div class="col-md-3">
-      <a href="{% url 'notes_detail' note.id%}">
-        <div class="card">
-          <div class="card-header">{{note.title}}</div>
-          <div class="card-body">{{note.description}}</div>
-          <div class="card-footer mt-auto">
-            <a href="{% url 'delete_notes' note.id %}">
-              <i class="fa fa-trash fa-2x"></i
-            ></a>
+    <div class="col-md-4 mb-4">
+      <a href="{% url 'notes_detail' note.id %}" style="text-decoration: none;">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-primary text-white">
+            {{ note.title }}
+          </div>
+          <div class="card-body text-dark">
+            {{ note.description|truncatewords:20 }}
+          </div>
+          <div class="card-footer bg-light text-right">
+            <a href="{% url 'delete_notes' note.id %}" class="text-danger">
+              <i class="fa fa-trash"></i> Delete
+            </a>
           </div>
         </div>
       </a>
     </div>
     {% endfor %}
-    <br /><br />
   </div>
 </div>
-<br /><br />
-<div class="container">
-  <form method="POST">
-    {% csrf_token %}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Create Notes</legend>
-    </fieldset>
-    {{ form }}
 
-    <div class="form-group">
-      <button href="" class="btn btn-outline-info" type="submit">Create</button>
+<hr class="my-5" />
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <legend class="mb-4 text-primary">Create Notes</legend>
+          {{ form|crispy }}
+        </fieldset>
+        <div class="form-group text-center">
+          <button class="btn btn-info px-4" type="submit">Create</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
+
 {% endblock content %}
