@@ -1,39 +1,54 @@
-{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
-<section class="text-center container">
-  <h2>Search Videos in Youtube</h2>
-  <p>search videos and select any video to open in youtube</p>
-  <form action="" method="post">
-    {% csrf_token %} {{form}}
-    <input class="btn btn-danger" type="submit" value="Submit" />
-  </form>
-  <br />
-  {% for result in results %}
-  <a href="{{ result.link }}" target="_blank">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-5">
-            <img class="img-fluid" src="{{result.thumbnail}}" alt="" />
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="text-primary">🎥 Search Videos on YouTube</h2>
+    <p class="text-muted">Type a keyword to find videos and watch them directly on YouTube.</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="POST" class="p-4 bg-white rounded shadow-sm border">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form }}
+        </div>
+        <div class="text-center mt-3">
+          <input class="btn btn-danger px-4" type="submit" value="Search">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    {% for result in results %}
+    <a href="{{ result.link }}" target="_blank" class="text-decoration-none">
+      <div class="card mb-4 shadow-sm border-0">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ result.thumbnail }}" alt="Video Thumbnail" class="img-fluid rounded-start">
           </div>
-          <div class="col-md-7">
-            <h3 class="p-0 m-0">{{result.title}}</h3>
-            <b>
-              <u>
-                <h5 class="p-0 m-0">{{result.channel}}</h5>
-              </u>
-            </b>
-            <h6 class="p-0 m-1">{{result.description}}</h6>
-            <b>
-              <h6 class="ml-0 mt-3">{{result.duration}}</h6>
-              <h6 class="ml-0 mt-1">{{result.views}}</h6>
-              <h6 class="ml-0 mt-1">{{result.published}}</h6>
-            </b>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title text-dark">{{ result.title }}</h5>
+              <p class="card-subtitle text-muted mb-2">{{ result.channel }}</p>
+              {% if result.description %}
+              <p class="card-text text-secondary">{{ result.description }}</p>
+              {% endif %}
+              <div class="d-flex flex-wrap text-muted small">
+                <span class="me-3"><i class="fa fa-clock"></i> {{ result.duration }}</span>
+                <span class="me-3"><i class="fa fa-eye"></i> {{ result.views }}</span>
+                <span><i class="fa fa-calendar"></i> {{ result.published }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </a>
-  {% endfor %}
-  <br />
+    </a>
+    {% endfor %}
+  </div>
 </section>
+
 {% endblock content %}
