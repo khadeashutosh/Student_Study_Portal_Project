@@ -1,29 +1,54 @@
-{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
 
-<section class="text-center container">
-  <h2>Search articles in wikipedia</h2>
-  <p>just enter the search query to obtain the results</p>
-  <b>Enter without any space</b>
-  <form action="" method="post">
-    {% csrf_token %} {{form}}
-    <input class="btn btn-danger" type="submit" value="Submit" />
-  </form>
-  <br />
+<section class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="text-primary">Search Articles on Wikipedia</h2>
+    <p class="text-muted">Enter a keyword to get a summary</p>
+    <small class="text-warning"><strong>Note:</strong> Avoid using spaces in queries</small>
+  </div>
 
-  <div class="container">
-    <div class="content-section p-0 mt-5">
-      <a href="" class="p-0 m-0" target="_blank">
-        <div class="custom-header">
-          <h2>{{title}}</h2>
-          {{title}}
-          <h6>{{link}}</h6>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="POST" class="p-4 bg-light rounded shadow">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form }}
         </div>
-      </a>
-
-      <hr class="p-0 m-0" />
-      <p class="description m-5 p-5">{{details}}</p>
-      <hr />
+        <div class="text-center mt-3">
+          <input class="btn btn-info px-4" type="submit" value="Search">
+        </div>
+      </form>
     </div>
   </div>
+
+  {% if title %}
+  <div class="card mt-5 shadow">
+    <div class="card-body">
+      <h4 class="card-title text-primary">{{ title }}</h4>
+
+      {% if link %}
+      <a href="{{ link }}" target="_blank" class="d-block mb-3 text-decoration-none">
+        <i class="fa fa-link text-secondary"></i> {{ link }}
+      </a>
+      {% endif %}
+
+      <p class="card-text text-justify">{{ details }}</p>
+
+      {% if options %}
+      <div class="alert alert-warning mt-3">
+        <h5>Did you mean:</h5>
+        <ul class="mb-0">
+          {% for item in options %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
 </section>
+
 {% endblock content %}
