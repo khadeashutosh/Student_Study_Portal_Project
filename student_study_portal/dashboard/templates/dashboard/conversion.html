@@ -1,34 +1,50 @@
-{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
-<div class="container text-center">
-  <form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <legend class="border-bottom mb-4"></legend>
-      {{form}}
-      <button href="" class="btn btn-outline-info" type="submit">Select</button>
-    </div>
-    {% if input %}
-    <fieldset class="form-group">
-    <legend class="border-bottom mb-4"></legend>
-      <div class="row">
-        <div class="col-md-4">
-        {{m_form.input}}</div> <br><br>
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
 
-      <div class="row">
-        <div class="col-md-4">
-        {{m_form.measure1}}</div><br><br>
-      <div class="row">
-        <div class="col-md-4">
-        {{m_form.measure2}}</div><br> <br>
+<div class="container mt-5">
+  <form method="POST" class="p-4 bg-light rounded shadow">
+    {% csrf_token %}
+
+    <fieldset class="form-group mb-4">
+      <legend class="text-primary mb-3">Select Conversion</legend>
+      <div class="form-group">
+        {{ form }}
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-info px-4" type="submit">Select</button>
+      </div>
+    </fieldset>
+
+    {% if input %}
+    <fieldset class="form-group mb-4">
+      <legend class="text-primary mb-3">Conversion Input</legend>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          {{ m_form.input.label_tag }}
+          {{ m_form.input }}
+        </div>
+        <div class="form-group col-md-4">
+          {{ m_form.measure1.label_tag }}
+          {{ m_form.measure1 }}
+        </div>
+        <div class="form-group col-md-4">
+          {{ m_form.measure2.label_tag }}
+          {{ m_form.measure2 }}
+        </div>
       </div>
 
+      <div class="form-group text-center mt-4">
+        <button class="btn btn-success px-4" type="submit">Convert</button>
+      </div>
     </fieldset>
-    <fieldset class="form-group">{{answer}}</fieldset>
-    <div class="form-group">
-      <button href="" class="btn btn-outline-info" type="submit">
-        Convert
-      </button>
-    </div>
+
+    <fieldset class="form-group mt-4">
+      <legend class="text-success">Result</legend>
+      <div class="alert alert-info">
+        {{ answer }}
+      </div>
+    </fieldset>
     {% endif %}
   </form>
 </div>
